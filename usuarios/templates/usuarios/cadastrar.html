@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block 'title' %}Cadastro do User{% endblock 'title' %}
+
+{% block 'content' %}
+<div class="container">
+  
+  <br>
+  <h1>Cadastre-se Aqui</h1>
+  <hr>
+  {% if request.GET.c == '1' %}
+    <div class="alert alert-success">
+      Cadastro Feito com Sucesso
+    </div>
+  {% elif request.GET.c == 'ee' %}
+    <div class="alert alert-danger">
+      Email ou Usuário já Existentes! Faça Login <a class="alert-link" href="{% url "login" %}">Clicando Aqui.</a>
+    </div>
+  {% elif request.GET.c == 'i' %}
+    <div class="alert alert-danger">
+      É preciso ter mais de 18 anos para criar uma conta
+    </div>
+  {% elif request.GET.c == '0'%}
+    <div class="alert alert-danger">
+      NÃO foi possível fazer o cadastro. Tente Novamente!
+    </div>
+  {% elif request.GET.c == 'e' %}
+    <div class="alert alert-warning">
+      NÃO pode conter espaços nos campos de <strong>nome, email e senha!</strong>
+    </div>
+  {% endif %}
+    <form action="{% url "cadastrar" %}" method="post" autocomplete="off">
+      {% csrf_token %}
+      <input type="text" name="nome" id="nome" placeholder="Nome" class="form-control">
+      <br>
+      <input type="date" name="data_nascimento" id="data_nascimento" class="form-control">
+      <br>
+      <input type="email" name="email" id="email" placeholder="Email" class="form-control">
+      <br>
+      <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+      <br>
+      <input type="submit" value="Enviar" class="btn btn-primary">
+      {% if request.GET.c == '1' %}
+        <a class="btn btn-success" href="{% url "login" %}">LOGIN<a>
+      {% endif %}
+    </form>
+</div>
+{% endblock 'content' %}

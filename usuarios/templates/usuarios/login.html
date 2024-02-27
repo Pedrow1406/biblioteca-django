@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block 'title' %}Login{% endblock 'title' %}
+{% block 'content' %}
+<br>
+  <div class="container">
+    <h1>Login</h1>
+    <hr>
+    {% if request.GET.loged == '1'%}
+      <div class="alert alert-success">
+        Login feito com SUCESSO!
+      </div>
+    {% elif request.GET.loged == '0' %}
+      <div class="alert alert-danger">
+        Username ou Senha INVÁLIDOS!!
+      </div>
+    {% elif request.GET.permission == 'denied' %}
+      <div class="alert alert-warning">
+        É preciso estar <strong>logado</strong> para acessar essa página.
+      </div>
+    {% elif request.GET.logout == '1' %}
+      <div class="alert alert-primary">
+        Deslogado com <strong>SUCESSO</strong>.
+      </div>
+    {% endif %}
+    <br>
+    <form action="{% url "login" %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="user" id="user" placeholder="Username" class="form-control">
+      <br>
+      <input type="password" name="password" id="password" placeholder="Password"class="form-control">
+      <br>
+      <input type="submit" value="Enviar" class="btn btn-success">
+    </form>
+  </div>
+{% endblock 'content' %}
