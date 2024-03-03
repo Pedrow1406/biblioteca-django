@@ -6,6 +6,53 @@
 <div class="container">
     <h2>Livros de {{usuario}}</h2>
     <hr>
+    {% if request.GET.cl == 'success' %}
+      <div class="alert alert-success">
+        Livro Cadastrado com Sucesso
+      </div>
+    {% elif request.GET.cl == 'fail' %}
+      <div class="alert alert-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+        Não é possível cadastrar um Livro na conta de outro usuario!
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+      </div>
+    {% elif request.GET.cc == 'success' %}
+      <div class="alert alert-success">
+        Categoria Cadastrada com Sucesso
+      </div>
+    {% elif request.GET.cc == 'fail' %}
+      <div class="alert alert-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+        Não é possível cadastrar uma Categoria na conta de outro usuario!
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+      </div>
+    {% elif request.GET.dados == 'invalidos' %}
+      <div class="alert alert-danger">
+        Dados Inválidos!
+      </div>
+    {% elif request.GET.l == 'deleted' %}
+      <div class="alert alert-danger">
+        Livro Deletado!
+      </div>
+    {% elif request.GET.l == 'deleted_fail' %}
+      <div class="alert alert-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+        Você não pode deletar um livro que não é seu!
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+      </div>
+    {% endif %}
     <div class="row">
         {% for livro in livros %}
             <div class="col-md">
@@ -28,14 +75,13 @@
                       {% endif %}
                       <br>
                       <br>
-                      <a href="#" class="btn btn-info">Acessar</a>
+                      <a href="{% url 'ver_livro' livro.id %}" class="btn btn-info">Editar</a>
                     </div>
                   </div>
             </div>
         {% endfor %}
     </div>
     <br>
-    <a class="btn btn-success"href="{% url "logout" %}">Logout</a>
 </div>
 {% endblock 'content' %}
 

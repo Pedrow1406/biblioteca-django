@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load filters %}
+{% block 'title' %}{% endblock 'title' %}
+
+{% block 'content' %}
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel2">Excluir Livro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Você tem certeza de que deseja excluir este livro?
+        </div>
+        <div class="modal-footer">
+          <a href="{% url "deletar_livro" livro.id %}"class="btn btn-danger">Sim</a>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="container">
+  <h1>Edite seu livro</h1>
+  <br>
+    <form action="{% url "ver_livro" livro.id %}" method="post">
+        {% csrf_token %}
+        <input style="width:60%;"type="text" name="nome_livro" id="nome_livro" class="form-control" placeholder="Livro" value="{{livro}}">
+        <br>
+        <input style="width:40%;" value="{{livro.autor}}"type="text" name="autor" id="autor" class="form-control" placeholder="Autor">
+        <br>
+        {% if livro.co_autor %}
+            <input style="width:40%;" value= "{{livro.co_autor}}"type="text" name="co_autor" id="co_autor" class="form-control" placeholder="{{livro.co_autor}}">
+            <br>
+        {% endif %}
+        {{livro.data_cadastro}}
+        <br>
+        <br>
+        <select style="width:15%;" class="form-control" name="categoria_select" id="categoria_select">
+            {% for l in user_categorias %}
+                {% if l == livro.categoria %}
+                    <option value="{{l}}" selected>{{l}}</option>
+                {% else %}
+                    <option value="{{l}}">{{l}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <input type="submit" value="Salvar" class="btn btn-info">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal2">
+            Excluir
+          </button>
+    </form>
+    <hr>
+    <h2>Historico de Emprestimos</h2>
+    <table class="table table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Dono Oficial</th>
+            <th scope="col">Emprestador</th>
+            <th scope="col">Recebedor</th>
+            <th scope="col">Nome do Livro</th>
+            <th scope="col">Data Emprestimo</th>
+            <th scope="col">Data de Devolução</th>
+            <th scope="col">Duração do Emprestimo</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            {% for  emprestimo in emprestimos %}
+            <tr>
+                <td>{{livro.dono_livro_cadastrado}}</td>
+                <td>{{emprestimo.dono_livro_atual}}</td>
+                {% if emprestimo.nome_emprestado %}
+                    <td>{{emprestimo.nome_emprestado}}</td>
+                {% else %}
+                    <td>{{emprestimo.nome_emprestado_anonimo}}</td>
+                {% endif %}
+                <td>{{emprestimo.livro.nome}}</td>
+                <td>{{emprestimo.data_emprestimo}}</td>
+                <td>{{emprestimo.data_devolucao}}</td>
+                <td>{{emprestimo.data_devolucao|mostra_duracao:emprestimo.data_emprestimo}} dias</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% endblock 'content' %}
