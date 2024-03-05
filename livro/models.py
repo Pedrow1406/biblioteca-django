@@ -31,10 +31,10 @@ class Emprestimo(models.Model):
     nome_emprestado = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, null=True, blank=True)
     dono_livro_atual = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, related_name='dono_livro_atual')
     nome_emprestado_anonimo = models.CharField(max_length = 30, blank=True)
-    data_emprestimo = models.DateField(null=True, blank=True)
+    data_emprestimo = models.DateField(auto_now_add=True, null=True, blank=True)
     data_devolucao = models.DateField(null=True, blank=True)
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
-    avaliacao = models.CharField(max_length=1, choices=choices)
+    avaliacao = models.CharField(max_length=1, choices=choices, null=True, blank=True)
 
     def __str__(self) -> str:
         if self.nome_emprestado:

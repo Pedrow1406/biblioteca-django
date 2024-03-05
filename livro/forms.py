@@ -30,6 +30,7 @@ class CadastroEmprestimo(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super().__init__(*args, **kwargs)
         self.fields['dono_livro_atual'].widget = forms.HiddenInput()
+        self.fields['avaliacao'].widget = forms.HiddenInput()
         for field_name in self.fields:
             self.fields[field_name].widget.attrs['class'] = 'form-control'
             if isinstance(self.fields[field_name].widget, forms.DateInput):
@@ -38,3 +39,4 @@ class CadastroEmprestimo(forms.ModelForm):
     class Meta:
         model = Emprestimo
         fields = '__all__'
+        exclude = ['data_emprestimo','data_devolucao']

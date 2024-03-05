@@ -3,6 +3,44 @@
 {% block 'title' %}Listagem de Livros{% endblock 'title' %}
 
 {% block 'content' %}
+{% for livro in livros %}
+  {% if livro.dono_livro_cadastrado != livro.usuario %}
+    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel3">Devolver Livro?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Você tem certeza de que deseja devolver este livro?
+          </div>
+          <div class="modal-footer">
+            <div class="container">  
+              <h6 class="modal-title" id="exampleModalLabel3">Avalie o Livro:</h6>
+              <form action="{% url "devolver_livro" livro.id %}" method="post">
+                {% csrf_token %}
+                <table class="as_table">
+                  <select name="avaliacao" id="avaliacao">
+                    {% for choice in avaliacao_choices %}
+                    <option value="{{choice.0}}">{{choice.1}}</option>
+                    {% endfor %}
+                  </select>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="submit" value="Sim" class="btn btn-success">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}
 <div class="container">
     <h2>Livros de {{usuario}}</h2>
     <hr>
@@ -52,6 +90,14 @@
           <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
         </svg>
       </div>
+    {% elif request.GET.l == 'd' %}
+      <div class="alert alert-info">
+        Livro Devolvido!
+      </div>
+    {% elif request.GET.e == 'success' %}
+      <div class="alert alert-success">
+        Emprestimo realizado com Sucesso!
+      </div>
     {% endif %}
     <div class="row">
         {% for livro in livros %}
@@ -76,6 +122,11 @@
                       <br>
                       <br>
                       <a href="{% url 'ver_livro' livro.id %}" class="btn btn-info">Editar</a>
+                      {% if livro.usuario != livro.dono_livro_cadastrado %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal3">
+                          Devolver
+                        </button>
+                      {% endif %}
                     </div>
                   </div>
             </div>

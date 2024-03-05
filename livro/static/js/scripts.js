@@ -19,3 +19,8 @@ function mostra_form(form_id) {
     emprestimo.style.display = 'block';
   }
 }
+
+// Rating Initialization
+$(document).ready(function() {
+  $('#rateMe2').mdbRate();
+});
