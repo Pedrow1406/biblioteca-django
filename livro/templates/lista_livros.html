@@ -23,7 +23,8 @@
               <form action="{% url "devolver_livro" livro.id %}" method="post">
                 {% csrf_token %}
                 <table class="as_table">
-                  <select name="avaliacao" id="avaliacao">
+                  <select name="avaliacao" id="avaliacao" class="form-control">
+                    <option value="">Não avaliar</option>
                     {% for choice in avaliacao_choices %}
                     <option value="{{choice.0}}">{{choice.1}}</option>
                     {% endfor %}

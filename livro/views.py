@@ -27,6 +27,8 @@ def home(request):
         
         emprestimo = Emprestimo.objects.first()
         avaliacao_choices = emprestimo.choices
+
+        total_livros = livros.count()
         return render(request, 'lista_livros.html', context={'livros': livros,
                                                              'v':False, 
                                                              'usuario':usuario,
@@ -34,7 +36,8 @@ def home(request):
                                                              'cadastro_livro':cadastro_livro,
                                                              'cadastro_categoria':cadastro_categoria,
                                                              'cadastro_emprestimo': cadastro_emprestimo,
-                                                             'avaliacao_choices':avaliacao_choices})
+                                                             'avaliacao_choices':avaliacao_choices,
+                                                             'total_livros': total_livros})
     return redirect('/auth/login/?permission=denied')
 
   
@@ -77,21 +80,22 @@ def ver_livro(request, id):
                                                             'avaliacao_choices':avaliacao_choices})
         return redirect('/auth/login/?permission=denied')
     elif request.method == 'POST':
-        nome_livro = request.POST.get('nome_livro')
-        autor = request.POST.get('autor')
-        co_autor = request.POST.get('co_autor')
-        is_emprestado = request.POST.get('emprestado')
-        categoria =  request.POST.get('categoria_select')
-        dados = [nome_livro, autor, co_autor, categoria]
-        for dado in dados:
-            if dado:
-                print(dado)
-        if is_emprestado:
-            print('Emprestado')
-        else:
-            print('Não Emprestado')
-        return HttpResponse('Dados Enviados com Sucesso')
-    
+        user_session = request.session.get('usuario')
+        if user_session:
+            livro = Livro.objects.get(id=id)
+            nome_livro = request.POST.get('nome_livro')
+            autor = request.POST.get('autor')
+            co_autor = request.POST.get('co_autor')
+            categoria =  int(request.POST.get('categoria_select'))
+            categoria = Categoria.objects.get(id = categoria)
+            livro.nome = nome_livro
+            livro.autor = autor
+            if co_autor:
+                livro.co_autor = co_autor
+            livro.categoria = categoria
+            livro.save()
+            return redirect(f'/livro/ver_livro/{id}')
+        
 
 def cadastrar_livro(request):
     user_session = request.session.get('usuario')
@@ -152,6 +156,14 @@ def cadastrar_emprestimo(request):
         return HttpResponse('Você precisa esta logado')
     return HttpResponse('Você não pode acessar a URL dessa maneira.')
 
+def seus_emprestimos(request):
+    user_session = request.session.get('usuario')
+    if user_session:
+        seus_livros_emprestados = Emprestimo.objects.filter(livro__dono_livro_cadastrado = user_session, livro__emprestado = True, data_devolucao = None)
+        print(seus_livros_emprestados)
+        return render(request,'seus_emprestimos.html', context={'usuario_logado':user_session,
+                                                                'e':True,
+                                                                'seus_livros_emprestados':seus_livros_emprestados})
 def devolver_livro(request,id):
     user_session = request.session.get('usuario')
     livro = Livro.objects.get(id=id)
@@ -165,7 +177,10 @@ def devolver_livro(request,id):
             livro.emprestado = False
             livro.usuario = emprestimo.dono_livro_atual
             livro.save()
-            emprestimo.avaliacao = avaliacao
+            if avaliacao:
+                emprestimo.avaliacao = avaliacao
+            else:
+                emprestimo.avaliacao = None
             emprestimo.save()
             print(emprestimo)
             return redirect('/livro/home/?l=d')

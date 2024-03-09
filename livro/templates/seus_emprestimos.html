@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block 'title' %}Seus Emprestimos{% endblock 'title' %}
+
+{% block 'content' %}
+<div class="container">
+    <h1>Seus Emprestimos</h1>
+    <hr>
+    <div class="row">
+        {% for livros in seus_livros_emprestados %}
+            <div class="col-md">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">{{livros.livro.nome}}</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{livros.livro.autor}}</h6>
+                      {{livros.livro.categoria}}
+                      <br>
+                      {% if livros.livro.emprestado %}
+                        <svg style="color:green;"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                        </svg> 
+                        <h6 style="display:inline;"class="card-subtitle mb-2 text-muted">Emprestado para {{livros.nome_emprestado}}</h6>
+                      {% endif %}
+                      <br>
+                      <br>
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+                {% endblock 'content' %}

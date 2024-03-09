@@ -15,7 +15,7 @@ function mostra_form(form_id) {
     modal_cadastro.innerText = `Cadastrar Categoria`
     categoria.style.display = 'block';
   } else if (form_id === 3) {
-    modal_cadastro.innerText = `Cadastrar Emprestimo`
+    modal_cadastro.innerText = `Fazer Emprestimo`
     emprestimo.style.display = 'block';
   }
 }
