@@ -4,7 +4,7 @@ class CadastroLivro(forms.ModelForm):
     class Meta:
         model = Livro
         fields = '__all__'
-        exclude = ['emprestado']
+        exclude = ['emprestado','img']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['dono_livro_cadastrado'].widget = forms.HiddenInput()

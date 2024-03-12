@@ -24,3 +24,12 @@ function mostra_form(form_id) {
 $(document).ready(function() {
   $('#rateMe2').mdbRate();
 });
+
+function insert_image(){
+  id_img = document.getElementById('id_img')
+  id_img.click()
+}
+function submit_image(){
+  form = document.getElementById('form')
+  form.submit()
+}

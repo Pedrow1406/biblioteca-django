@@ -9,8 +9,11 @@
     <div class="row">
         {% for livros in seus_livros_emprestados %}
             <div class="col-md">
-                <div class="card" style="width: 18rem;">
+                <div class="card" style="width: 16rem;">
                     <div class="card-body">
+                      {% if livros.livro.img %}
+                        <img class="card-img-top" src="{{livros.livro.img.url}}" alt="">
+                      {% endif %}
                       <h5 class="card-title">{{livros.livro.nome}}</h5>
                       <h6 class="card-subtitle mb-2 text-muted">{{livros.livro.autor}}</h6>
                       {{livros.livro.categoria}}

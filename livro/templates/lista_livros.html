@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block 'title' %}Listagem de Livros{% endblock 'title' %}
 
 {% block 'content' %}
@@ -103,8 +103,23 @@
     <div class="row">
         {% for livro in livros %}
             <div class="col-md">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
+                <div class="card" style="width: 15rem;">
+                  <div class="card-body">
+
+                    {% if livro.img %}
+                      <img class="card-img-top" src="{{livro.img.url}}" alt="">
+                    {% else %}
+                      {% if usuario_logado == livro.dono_livro_cadastrado.id %}
+                        <form id="form" action="{% url "insert_images" livro.id %}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <label onclick="insert_image()" for="img_label">
+                            <img class="card-img-top" src="{% static "img/insert_here.png" %}" alt="Insert Image">
+                          </label>
+                          <input onchange="submit_image()" style="display:none;"type="file" name="img" accept="image/*" class="form-control" id="id_img">
+                        </form>
+                      {% endif %}
+                    {% endif %}
+
                       <h5 class="card-title">{{livro}}</h5>
                       <h6 class="card-subtitle mb-2 text-muted">{{livro.autor}}</h6>
                       {{livro.categoria}}
@@ -135,5 +150,6 @@
     </div>
     <br>
 </div>
+<script src="{% static "js/scripts.js" %}"></script>
 {% endblock 'content' %}
 

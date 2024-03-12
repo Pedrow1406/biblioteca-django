@@ -100,8 +100,8 @@ def ver_livro(request, id):
 def cadastrar_livro(request):
     user_session = request.session.get('usuario')
     if request.method == 'POST':
-        print(request.POST)
-        cadastrar_livro = CadastroLivro(request.POST)
+        print(request.POST, request.FILES)
+        cadastrar_livro = CadastroLivro(request.POST, request.FILES)
         usuario_id = int(request.POST.get('usuario'))
         dono_livro = int(request.POST.get('dono_livro_cadastrado'))
         if user_session:
@@ -184,6 +184,17 @@ def devolver_livro(request,id):
             emprestimo.save()
             print(emprestimo)
             return redirect('/livro/home/?l=d')
+
+def insert_images(request, id):
+    user_session = request.session.get('usuario')
+    if user_session:
+        if request.method == 'POST':
+            image = request.FILES.get('img')
+            livro = Livro.objects.get(id=id)
+            livro.img = image
+            livro.save()
+            return redirect('/livro/home/')
+
 
 def deletar_livro(request,id):
     user_session = request.session.get('usuario')

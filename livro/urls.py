@@ -9,5 +9,6 @@ urlpatterns = [
     path('cadastrar_emprestimo/', views.cadastrar_emprestimo, name='cadastrar_emprestimo'),
     path('seus_emprestimos/', views.seus_emprestimos, name='seus_emprestimos'),
     path('devolver_livro/<int:id>', views.devolver_livro, name='devolver_livro'),
-    path('deletar_livro/<int:id>', views.deletar_livro, name='deletar_livro')
+    path('deletar_livro/<int:id>', views.deletar_livro, name='deletar_livro'),
+    path('insert_images/<int:id>', views.insert_images, name='insert_images')
 ]
